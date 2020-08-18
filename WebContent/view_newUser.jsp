@@ -31,10 +31,7 @@ if (login_info != null) {
 						<li class='nav-item'><a class='nav-link' href='/'>ユーザ検索</a></li>
 						<li class='nav-item'><a class='nav-link' href=''>お気に入り</a></li>
 						<li class='nav-item'><a class='nav-link' href='process_logout.jsp'onclick="return confirm('ログアウトします。よろしいですか？')">ログアウト</a></li>
-						<%if((Integer.parseInt(login_info.get(3))) == 1){
-							%>
-							<li class='nav-item'><a class='nav-link' href='view_openLecture.jsp'>開講科目登録</a></li>
-						<% }%>
+
 					<% } else{%>
 						<li class='nav-item'><a class='nav-link'href='view_loginUser.jsp'>ログイン</a></li>
 						<li class='nav-item'><a class='nav-link'href='view_newUser.jsp'>ユーザ登録</a></li>

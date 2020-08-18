@@ -14,30 +14,15 @@ public class UserDbaccess {
 	protected int user_id = -1;
 	protected String user_name;
 	protected String user_password;
-	protected int admin;
 	protected String user_mail;
 
-	public void dataload()throws Exception{
-		num=0;
-		Class.forName("com.mysql.jdbc.Driver").newInstance(); //com.mysql.jdbc.Drive
-		String url="jdbc:mysql://localhost/sample";
-		Connection conn = DriverManager.getConnection(url, "root", "yuma0101");
-		String sql = "";
-		PreparedStatement stmt =conn.prepareStatement(sql);
-		ResultSet rs = stmt.executeQuery();
-		while(rs.next()) {
-		}
-		rs.close();
-		stmt.close();
-		conn.close();
 
-	}
 
 	public boolean  userRegister(String name, String password, String mail)throws Exception{//ユーザ登録用のメソッド
 		num=0;
 		Class.forName("com.mysql.jdbc.Driver").newInstance(); //com.mysql.jdbc.Drive
-		String url="jdbc:mysql://localhost/share_class";
-		Connection conn = DriverManager.getConnection(url, "root", "yuma0101");
+		String url="jdbc:mysql://localhost/share_class?serverTimezone=JST";
+		Connection conn = DriverManager.getConnection(url, "root", "");
 		String sql2 = "select * from users where user_mail = ?";
 		PreparedStatement stmt2 =conn.prepareStatement(sql2);
 		stmt2.setString(1,mail);
@@ -70,8 +55,8 @@ public class UserDbaccess {
 	public List<String> userLogin(String mail,String password)throws Exception{//ユーザログイン用のメソッド
 		List<String> result = new ArrayList<String>();
 		Class.forName("com.mysql.jdbc.Driver").newInstance(); //com.mysql.jdbc.Drive
-		String url="jdbc:mysql://localhost/share_class";
-		Connection conn = DriverManager.getConnection(url, "root", "yuma0101");
+		String url="jdbc:mysql://localhost/share_class?serverTimezone=JST";
+		Connection conn = DriverManager.getConnection(url, "root", "");
 		String sql = "select * from users where user_mail = ?";
 		PreparedStatement stmt =conn.prepareStatement(sql);
 		stmt.setString(1,mail);
@@ -80,25 +65,24 @@ public class UserDbaccess {
 			user_id = rs.getInt("user_id");
 			user_name=rs.getString("user_name");
 			user_password = rs.getString("user_password");
-			admin = rs.getInt("admin");
 			user_mail=rs.getString("user_mail");
 		}
-		if(user_id == -1){
-		    rs.close();
-			stmt.close();
-			conn.close();
-			return result;
-		}
+
+
 		if (user_password.equals(password)){
 		    rs.close();
 			stmt.close();
 			conn.close();
-			result.add(String.valueOf(user_id));
+			if(user_id == -1){
+			    rs.close();
+				stmt.close();
+				conn.close();
+				return result;
+			}
 			result.add(user_name);
 			result.add(user_password);
-			result.add(String.valueOf(admin));
 			result.add(user_mail);
-
+			result.add(String.valueOf(user_id));
 			return result;
 		}else {
 		    rs.close();
